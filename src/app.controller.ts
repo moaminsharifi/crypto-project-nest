@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import { app } from './entities/app.entity';
+import { App } from './entities/app.entity';
 
 @ApiTags('Api Health Check')
 @Controller()
@@ -14,7 +14,7 @@ export class AppController {
     Route: /
   */
   @Get()
-  @ApiOkResponse({ type: app })
+  @ApiOkResponse({ type: App })
   getHello(): object {
     return {
       status: this.appService.getStatus(),

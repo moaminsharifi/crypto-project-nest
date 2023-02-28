@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class app {
+export class App {
   @ApiProperty()
-  status: 'healthy' | 'fail';
+  status: 'Healthy' | 'Fail';
 
   @ApiProperty()
   created_at: Date;
