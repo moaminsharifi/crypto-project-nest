@@ -7,13 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiProperty,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CryptoCurrenciesService } from './crypto-currencies.service';
 import { CreateCryptoCurrencyDto } from './dto/create-crypto-currency.dto';
 import { UpdateCryptoCurrencyDto } from './dto/update-crypto-currency.dto';
