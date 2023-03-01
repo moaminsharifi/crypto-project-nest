@@ -11,7 +11,9 @@ describe('CryptoCurrenciesController', () => {
       providers: [CryptoCurrenciesService],
     }).compile();
 
-    controller = module.get<CryptoCurrenciesController>(CryptoCurrenciesController);
+    controller = module.get<CryptoCurrenciesController>(
+      CryptoCurrenciesController,
+    );
   });
 
   it('should be defined', () => {

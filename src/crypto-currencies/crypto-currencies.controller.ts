@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CryptoCurrenciesService } from './crypto-currencies.service';
@@ -16,6 +19,7 @@ import { CryptoCurrency } from './entities/crypto-currency.entity';
 @ApiTags('Crypto Currency Manager')
 @Controller('crypto-currencies')
 export class CryptoCurrenciesController {
+  // Add resource sevice to class instance after constructed
   constructor(
     private readonly cryptoCurrenciesService: CryptoCurrenciesService,
   ) {}
@@ -27,18 +31,8 @@ export class CryptoCurrenciesController {
   */
   @Post()
   @ApiCreatedResponse({ type: CryptoCurrency })
-  create(
-    @Body() createCryptoCurrencyDto: CreateCryptoCurrencyDto,
-  ): CryptoCurrency {
-    return {
-      id: 2,
-      email: 'kiaras@fmail.com',
-      name: 'BTC',
-      description: 'LoremIpsom',
-      last_trade_price: 2.0,
-      created_at: new Date(),
-      last_trade_date: new Date(),
-    };
+  create(@Body() createCryptoCurrencyDto: CreateCryptoCurrencyDto) {
+    return this.cryptoCurrenciesService.create(createCryptoCurrencyDto);
   }
 
   /*
@@ -48,8 +42,8 @@ export class CryptoCurrenciesController {
   */
   @Get()
   @ApiOkResponse({ type: CryptoCurrency, isArray: true })
-  findAll(): CryptoCurrency[] {
-    return [];
+  findAll() {
+    return this.cryptoCurrenciesService.findAll();
   }
 
   /*
@@ -59,18 +53,14 @@ export class CryptoCurrenciesController {
   */
   @Get(':id')
   @ApiOkResponse({ type: CryptoCurrency })
-  findOne(@Param('id') id: string): CryptoCurrency {
-    return {
-      id: 2,
-      email: 'kiaras@fmail.com',
-      name: 'BTC',
-      description: 'LoremIpsom',
-      last_trade_price: 2.0,
-      created_at: new Date(),
-      last_trade_date: new Date(),
-    };
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const currency = await this.cryptoCurrenciesService.findOne(id);
+    if (currency) {
+      return currency;
+    } else {
+      throw new NotFoundException();
+    }
   }
-
   /*
     Duty: Update Selected Currency
     Method: Patch
@@ -79,18 +69,10 @@ export class CryptoCurrenciesController {
   @Patch(':id')
   @ApiOkResponse({ type: CryptoCurrency })
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCryptoCurrencyDto: UpdateCryptoCurrencyDto,
-  ): CryptoCurrency {
-    return {
-      id: 2,
-      email: 'kiaras@fmail.com',
-      name: 'BTC',
-      description: 'LoremIpsom',
-      last_trade_price: 2.0,
-      created_at: new Date(),
-      last_trade_date: new Date(),
-    };
+  ) {
+    return this.cryptoCurrenciesService.update(id, updateCryptoCurrencyDto);
   }
 
   /*
@@ -100,16 +82,7 @@ export class CryptoCurrenciesController {
   */
   @ApiOkResponse({ type: CryptoCurrency })
   @Delete(':id')
-  remove(@Param('id') id: string): CryptoCurrency {
-    // return this.cryptoCurrenciesService.remove(+id);
-    return {
-      id: 2,
-      email: 'kiaras@fmail.com',
-      name: 'BTC',
-      description: 'LoremIpsom',
-      last_trade_price: 2.0,
-      created_at: new Date(),
-      last_trade_date: new Date(),
-    };
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.cryptoCurrenciesService.remove(id);
   }
 }
