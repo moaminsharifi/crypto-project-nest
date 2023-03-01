@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class App {
-  @ApiProperty()
+  @ApiProperty({ enum: ['Healthy', 'Fail'] })
   status: 'Healthy' | 'Fail';
 
   @ApiProperty()
-  created_at: Date;
+  date: Date;
 }
