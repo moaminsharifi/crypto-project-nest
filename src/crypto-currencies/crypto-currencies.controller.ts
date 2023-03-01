@@ -10,33 +10,45 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { EntityNotFoundError } from 'typeorm';
 import { CryptoCurrenciesService } from './crypto-currencies.service';
 import { CreateCryptoCurrencyDto } from './dto/create-crypto-currency.dto';
 import { UpdateCryptoCurrencyDto } from './dto/update-crypto-currency.dto';
 import { CryptoCurrency } from './entities/crypto-currency.entity';
+import { DeleteCryptoCurrency } from './entities/delete-crypto-currency.entity';
 
 @ApiTags('Crypto Currency Manager')
 @Controller('crypto-currencies')
 export class CryptoCurrenciesController {
-  // Add resource sevice to class instance after constructed
+  // Add crypto-currenies sevice to class instance after constructed
   constructor(
     private readonly cryptoCurrenciesService: CryptoCurrenciesService,
   ) {}
 
   /*
-    Duty: Insert new Currencies
+    Action:
+      - Insert new Currency if not exists
+      - throw conflict exception if exists
     Method: Post
     Route: /crypto-currencies
   */
   @Post()
   @ApiCreatedResponse({ type: CryptoCurrency })
+  @ApiNotFoundResponse({
+    description: 'nest.js default `notFoundException 404`',
+  })
   create(@Body() createCryptoCurrencyDto: CreateCryptoCurrencyDto) {
     return this.cryptoCurrenciesService.create(createCryptoCurrencyDto);
   }
 
   /*
-    Duty: Get All Currencies
+    Action: Get All Currencies
     Method: Get
     Route: /crypto-currencies
   */
@@ -47,7 +59,9 @@ export class CryptoCurrenciesController {
   }
 
   /*
-    Duty: Get single Currency
+    Action:
+      - Get single Currency if not exists
+      - throw 404 not found exception if not exists
     Method: Get
     Route: /crypto-currencies/:id
   */
@@ -62,7 +76,9 @@ export class CryptoCurrenciesController {
     }
   }
   /*
-    Duty: Update Selected Currency
+    Action:
+      - Update Selected Currency if exists
+      - throw 404 not found exception if not exists
     Method: Patch
     Route: /crypto-currencies/:id
   */
@@ -76,11 +92,13 @@ export class CryptoCurrenciesController {
   }
 
   /*
-    Duty: Delete Selected Currency
+    Action:
+      - Delete Selected Currency if exists
+      - throw 404 not found exception if not exists
     Method: Delete
     Route: /crypto-currencies/:id
   */
-  @ApiOkResponse({ type: CryptoCurrency })
+  @ApiOkResponse({ type: DeleteCryptoCurrency })
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.cryptoCurrenciesService.remove(id);
