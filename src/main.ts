@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('Crypto Manager API')
     .setDescription('Socket + CRUD Test Project')
     .setVersion('1.0')
+    .setBasePath('/v1.0')
     .build();
 
   // setup swagger on `/docs` route
@@ -18,7 +19,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   // add version prefix to api
-  app.setGlobalPrefix('v1.0');
+  app.setGlobalPrefix('/v1.0');
 
   // use validator pip for input params and body validation
   app.useGlobalPipes(new ValidationPipe());

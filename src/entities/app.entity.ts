@@ -5,5 +5,5 @@ export class App {
   status: 'Healthy' | 'Fail';
 
   @ApiProperty()
-  created_at: Date;
+  date: Date;
 }

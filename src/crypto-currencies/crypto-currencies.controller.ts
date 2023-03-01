@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import {
@@ -16,7 +15,6 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { EntityNotFoundError } from 'typeorm';
 import { CryptoCurrenciesService } from './crypto-currencies.service';
 import { CreateCryptoCurrencyDto } from './dto/create-crypto-currency.dto';
 import { UpdateCryptoCurrencyDto } from './dto/update-crypto-currency.dto';
