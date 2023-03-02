@@ -8,5 +8,6 @@ import { CryptoCurrency } from './entities/crypto-currency.entity';
   imports: [TypeOrmModule.forFeature([CryptoCurrency])],
   controllers: [CryptoCurrenciesController],
   providers: [CryptoCurrenciesService],
+  exports: [CryptoCurrenciesService],
 })
 export class CryptoCurrenciesModule {}
