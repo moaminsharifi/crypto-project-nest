@@ -9,8 +9,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: 'currency_manager',
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
-  synchronize: false,
-  // synchronize: process.env.ENVIRONMENT === 'dev' ? true : false,
+  synchronize: process.env.ENVIRONMENT === 'dev' ? true : false,
 };
 
 const dataSource = new DataSource(dataSourceOptions);
