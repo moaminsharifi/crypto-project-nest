@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CryptoCurrenciesModule } from './crypto-currencies/crypto-currencies.module';
@@ -10,6 +10,9 @@ import { TradeModule } from './trade/trade.module';
 
 @Module({
   imports: [
+    CacheModule.register({
+      isGlobal: true,
+    }),
     CryptoCurrenciesModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(dataSourceOptions),

@@ -8,30 +8,36 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { SocketService } from './socket.service';
-import { Logger } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Logger } from '@nestjs/common';
 import { WsHealthCheck } from './entities/ws-health-check.entity';
+import { Cache } from 'cache-manager';
+import { TradeService } from 'src/trade/trade.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   private logger: Logger = new Logger('SocketGateway');
 
-  constructor(private readonly socketService: SocketService) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly socketService: SocketService,
+    private readonly tradeService: TradeService,
+  ) {}
 
   /*
     Action:
       - Add socket initial log 
       - Enable on-demand priceList emiter interval
   */
-  afterInit(server: Server) {
+  async afterInit(server: Server) {
     // Insert log ( just at initial server )
     this.logger.log(`Socket Gateway initialed`);
 
     // Start priceList Emiter interval
     setInterval(async () => {
-      const prices = await this.socketService.insertFakeTrades();
-      server.emit('priceList', prices);
+      await this.socketService.insertFakeTrades();
+      server.emit('priceList', await this.tradeService.findAllWithInfo());
     }, parseInt(process.env.WS_PRICE_EMITER_DELAY) || 2000);
   }
 
