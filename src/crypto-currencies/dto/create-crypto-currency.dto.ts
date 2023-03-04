@@ -16,6 +16,6 @@ export class CreateCryptoCurrencyDto {
     maxLength: 512,
     minLength: 3,
   })
-  @Length(3, 512)
+  @Length(0, 512)
   description?: string;
 }
