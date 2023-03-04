@@ -14,7 +14,7 @@ async function bootstrap() {
   // Swagger config file created
   const config = new DocumentBuilder()
     .setTitle('Crypto Manager API')
-    .setDescription('Socket + CRUD Test Project')
+    .setDescription('Socket + Restful Project')
     .setVersion('1.0')
     .setBasePath('/v1.0')
     .build();

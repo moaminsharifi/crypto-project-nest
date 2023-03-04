@@ -19,4 +19,14 @@ describe('CryptoCurrenciesController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('should create new', () => {
+    const testCurrency = {
+      name: 'tst',
+      email: 'test@test.com',
+      description: 'summery',
+    };
+
+    expect(controller.create(testCurrency));
+  });
 });

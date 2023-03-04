@@ -15,7 +15,7 @@ export class AppController {
   */
   @Get()
   @ApiOkResponse({ type: App })
-  getHello(): object {
+  checkStatus(): object {
     return {
       status: this.appService.getStatus(),
       date: new Date(),
